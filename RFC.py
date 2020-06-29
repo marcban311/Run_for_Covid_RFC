@@ -20,6 +20,10 @@ floor_surface = pygame.image.load('object/podłoga.png').convert()
 floor_surface = pygame.transform.scale2x(floor_surface)
 floor_x_pos = 0
 
+mario_surface = pygame.image.load('object/pic2.png').convert()
+mario_surface = pygame.transform.scale2x(mario_surface)
+mario_rect = mario_surface.get_rect(center = (100,512))
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -38,8 +42,6 @@ while True:
     if floor_x_pos<= -576:
         floor_x_pos = 0
 
-
-    screen.blit(floor_surface,(floor_x_pos,904))
-
+    screen.blit(mario_surface,mario_rect)
     pygame.display.update()
     clock.tick(120)
