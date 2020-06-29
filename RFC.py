@@ -9,10 +9,11 @@ def draw_bg():
     screen.blit(bg_surface,(bg_x_pos+576,0))
 
 pygame.init()
+
 screen = pygame.display.set_mode((576,1024))
 clock = pygame.time.Clock()
 
-bg_surface = pygame.image.load('object/tło.png').convert()
+bg_surface = pygame.image.load('object/tło1.png').convert()
 bg_surface = pygame.transform.scale2x(bg_surface)
 bg_x_pos= -1
 
@@ -30,7 +31,6 @@ while True:
             pygame.quit()
             sys.exit()
     
-
     bg_x_pos -=0.5
     draw_bg()
     floor_x_pos -=1
