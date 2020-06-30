@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pic
-import rfc
+import RFC
+
 class Ui_MainWindow(object):
     
     def setupUi(self, MainWindow):
@@ -17,6 +18,7 @@ class Ui_MainWindow(object):
         self.pushButton.setStyleSheet("background-color: rgb(221, 62, 41);\n"
 "font: 12pt \"Proxy 8\";")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.click.connect(RFC)
 
         self.pushButton1 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton1.setGeometry(QtCore.QRect(490, 360, 160, 31))
