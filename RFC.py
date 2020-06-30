@@ -34,23 +34,31 @@ def mario_animation():
     new_mario_rect = new_mario.get_rect(center=(100, mario_rect.centery))
     return new_mario, new_mario_rect
 
+def score_display(game_state):
+    score_surface = game_font.render(str(int(score)),True,(255, 255, 255))
+    score_rect = score_surface.get_rect(center = (288,100))
+    screen.blit(score_surface,score_rect)
+
 pygame.init()
 screen = pygame.display.set_mode((576,1024))
 clock = pygame.time.Clock()
+game_font = pygame.font.Font('Bo.tTF', 100)
 #const
 gravity = 0.4
 mario_movement = 0
 game_activ = True
+mario_minimum_y = 861
+score= 0
+high_score= 0 
 
 #import grafik
 bg_surface = pygame.image.load('object/tło.png').convert()
 bg_surface = pygame.transform.scale2x(bg_surface)
 bg_x_pos= 0
-
 floor_surface = pygame.image.load('object/podłoga.png').convert()
 floor_surface = pygame.transform.scale2x(floor_surface)
 floor_x_pos = 0
-mario_minimum_y = 861
+
 virus_surface = pygame.image.load('object/corona.png').convert_alpha()
 
 mario1_surface = pygame.image.load('object/pic2aaaa.png').convert_alpha()
@@ -95,6 +103,7 @@ while True:
                 game_activ= True
                 virus_y_pos_list.clear()
                 mario_rect.center = (100, mario_minimum_y)
+                score = 0
         
         if event.type == SPAWNVIRUS:
             virus_y_pos_list.append(create_virus())
@@ -120,14 +129,14 @@ while True:
         game_activ = check_collision(virus_y_pos_list)
         if mario_rect.centery >= mario_minimum_y:
             mario_movement= 0
-
+        score_display()
     #virus
         virus_y_pos_list = move_virus(virus_y_pos_list)
         draw_virus(virus_y_pos_list)
 
     #kolizja
         check_collision(virus_y_pos_list)
-    
+        score += 0.01
 #zapętlenie tła 
     if bg_x_pos<= -576:
         bg_x_pos = 0
