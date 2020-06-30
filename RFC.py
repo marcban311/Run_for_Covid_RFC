@@ -35,10 +35,23 @@ def mario_animation():
     return new_mario, new_mario_rect
 
 def score_display(game_state):
-    score_surface = game_font.render(str(int(score)),True,(255, 255, 255))
-    score_rect = score_surface.get_rect(center = (288,100))
-    screen.blit(score_surface,score_rect)
-
+    if game_state =='main_game':
+        score_surface = game_font.render(str(int(score)),True,(255, 255, 255))
+        score_rect = score_surface.get_rect(center = (288,100))
+        screen.blit(score_surface,score_rect)
+    if game_state =='game_over':
+        score_surface = game_font.render(f'Score:{int(score)}',True,(255, 255, 255))
+        score_rect = score_surface.get_rect(center = (288,230))
+        screen.blit(score_surface,score_rect)
+        
+        high_score_surface = game_font.render(f'High score:{int(high_score)}',True,(255, 255, 255))
+        high_score_rect = high_score_surface.get_rect(center = (288,100))
+        screen.blit(high_score_surface,high_score_rect)
+def update_score(score, high_score):
+    if score > high_score:
+        high_score = score
+    return high_score
+        
 pygame.init()
 screen = pygame.display.set_mode((576,1024))
 clock = pygame.time.Clock()
@@ -83,7 +96,7 @@ pygame.time.set_timer(MARIOSTEP,50)
 bat_surface = pygame.image.load('object/bat.png').convert_alpha()
 bat_surface = pygame.transform.scale2x(bat_surface)
 
-virus_random_list= [850, 860, 800, 830, 810, 790, 780, 870, 750]
+virus_random_list= [850, 810, 780, 850, 810, 740]
 virus_y_pos_list = []
 
 SPAWNVIRUS = pygame.USEREVENT
@@ -129,7 +142,6 @@ while True:
         game_activ = check_collision(virus_y_pos_list)
         if mario_rect.centery >= mario_minimum_y:
             mario_movement= 0
-        score_display()
     #virus
         virus_y_pos_list = move_virus(virus_y_pos_list)
         draw_virus(virus_y_pos_list)
@@ -137,6 +149,10 @@ while True:
     #kolizja
         check_collision(virus_y_pos_list)
         score += 0.01
+        score_display('main_game')
+    else:
+        high_score = update_score(score,high_score)
+        score_display('game_over')
 #zapętlenie tła 
     if bg_x_pos<= -576:
         bg_x_pos = 0
