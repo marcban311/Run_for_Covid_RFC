@@ -9,13 +9,33 @@ def draw_bg():
     screen.blit(bg_surface,(bg_x_pos+576,0))
 
 def create_virus():
-    new_virus = virus_surface.get_rect(center = (288, 850))
+    random_virus_pos = random.choice(virus_random_list)
+    new_virus = virus_surface.get_rect(center = (600, random_virus_pos))
     return new_virus
 
 def move_virus(viruses):
     for virus in viruses:
         virus.centerx -= 5 
     return viruses
+
+def draw_virus(viruses):
+    for virus in viruses:
+        screen.blit(virus_surface,virus)
+
+def create_bat():
+    random_bat_pos = random.choice(bat_random_list)
+    new_bat = bat_surface.get_rect(center = (600, random_bat_pos))
+    return new_bat
+
+def move_bat(bats):
+    for bat in bats:
+        bat.centerx -= 1 
+    return bats
+
+def draw_bat(bats):
+    for bat in bats:
+        screen.blit(bat_surface,bat)
+
 
 pygame.init()
 screen = pygame.display.set_mode((576,1024))
@@ -42,10 +62,17 @@ virus_surface = pygame.transform.scale2x(virus_surface)
 
 bat_surface = pygame.image.load('object/bat.png').convert_alpha()
 bat_surface = pygame.transform.scale2x(bat_surface)
-
+virus_random_list= [850, 860, 810, 750, 720, 700, 800]
 virus_y_pos_list = []
+
+bat_random_list= [710, 690, 730]
+bat_y_pos_list = []
+
 SPAWNVIRUS = pygame.USEREVENT
 pygame.time.set_timer(SPAWNVIRUS,1200)
+
+SPAWNBAT = pygame.USEREVENT
+pygame.time.set_timer(SPAWNBAT, 8000)
 
 while True:
     for event in pygame.event.get():
@@ -61,6 +88,9 @@ while True:
         if event.type == SPAWNVIRUS:
             virus_y_pos_list.append(create_virus())
 
+        if event.type == SPAWNBAT:
+            bat_y_pos_list.append(create_bat())
+
 
     bg_x_pos -= 0.5
     draw_bg()
@@ -71,11 +101,15 @@ while True:
     mario_movement += gravity 
     mario_rect.centery += mario_movement
     screen.blit(mario_surface,mario_rect)
- if mario_rect.centery >= mario_minimum_y:
+
+    if mario_rect.centery >= mario_minimum_y:
         mario_movement= 0
 #virus
+    virus_y_pos_list = move_virus(virus_y_pos_list)
+    draw_virus(virus_y_pos_list)
 
-
+    bat_y_pos_list = move_bat(bat_y_pos_list)
+    draw_bat(bat_y_pos_list)
 
    
 #zapętlenie tła 
