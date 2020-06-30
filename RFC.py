@@ -74,6 +74,7 @@ def check_collision_for_pill(pills,bonus):
             if frames % 25 == 0:
                 print("bonus")
 
+pygame.mixer.pre_init(frequency= 44100, size = 16, channels = 1, buffer = 1024)
 pygame.init()
 screen = pygame.display.set_mode((576,1024))
 clock = pygame.time.Clock()
@@ -130,6 +131,10 @@ pill_y_pos_list = []
 SPAWNPILL = pygame.USEREVENT+2
 pygame.time.set_timer(SPAWNPILL,5000)
 
+#hit_sound = pygame.mixer.Sound('music/hit.mp3')
+bg_sound = pygame.mixer.Sound('music/tło.wav')
+jump_sound = pygame.mixer.Sound('music/hit.wav')
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -140,7 +145,7 @@ while True:
             if event.key== pygame.K_SPACE and game_activ:
                 mario_movement = 0
                 mario_movement -=12
-
+                jump_sound.play()
             if event.key== pygame.K_SPACE and game_activ == False:
                 game_activ= True
                 virus_y_pos_list.clear()
@@ -165,7 +170,7 @@ while True:
     draw_bg()
     floor_x_pos -= 5
     draw_floor()
-
+    bg_sound.play()
     if game_activ:
     # mario i grawitacja
         mario_movement += gravity 
